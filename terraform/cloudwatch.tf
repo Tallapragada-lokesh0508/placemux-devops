@@ -140,3 +140,30 @@ resource "aws_cloudwatch_dashboard" "main" {
     ]
   })
 }
+# SLO: availability
+resource "aws_cloudwatch_metric_alarm" "slo_availability" {
+  alarm_name          = "slo-availability-breach"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 1
+  metric_name         = "5XXError"
+  namespace           = "AWS/ApplicationELB"
+  period              = 60
+  statistic           = "Sum"
+  threshold           = 10
+  alarm_description   = "SLO BREACH: more than 10 5XX errors in 1 minute"
+  alarm_actions       = [aws_sns_topic.alerts.arn]
+}
+
+# SLO: p95 latency under 500ms
+resource "aws_cloudwatch_metric_alarm" "slo_latency" {
+  alarm_name          = "slo-latency-breach"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 2
+  extended_statistic  = "p95"
+  metric_name         = "TargetResponseTime"
+  namespace           = "AWS/ApplicationELB"
+  period              = 60
+  threshold           = 0.5
+  alarm_description   = "SLO BREACH: p95 latency exceeds 500ms"
+  alarm_actions       = [aws_sns_topic.alerts.arn]
+}
