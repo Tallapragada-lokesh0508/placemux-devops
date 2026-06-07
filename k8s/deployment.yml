@@ -1,0 +1,22 @@
+name: Deploy Dev
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Build Docker Image
+      run: echo "Building Docker Image"
+
+    - name: Push to ECR
+      run: echo "Pushing to ECR"
+
+    - name: Deploy to Kubernetes
+      run: echo "Deploying to K8s"

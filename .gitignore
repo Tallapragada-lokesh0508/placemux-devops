@@ -1,0 +1,5 @@
+.terraform/
+*.exe
+node_modules/
+*.tfstate
+.terraform.lock.hcl
